@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-nt4zs794*6!b-yl38z4fsr%$90r3n5@ndb*@f%f%c4$onui-ix
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -129,3 +129,5 @@ CACHES = {
         'LOCATION': 'travel-planner-cache',
     }
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

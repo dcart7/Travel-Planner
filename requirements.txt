@@ -3,3 +3,4 @@ djangorestframework>=3.14
 requests>=2.31
 drf-spectacular>=0.26
 python-dotenv>=1.0
+drf-nested-routers>=0.93

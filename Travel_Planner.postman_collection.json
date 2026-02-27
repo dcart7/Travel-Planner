@@ -1,0 +1,201 @@
+{
+  "info": {
+    "name": "Travel Planner API",
+    "_postman_id": "travel-planner-collection",
+    "description": "Complete collection for the Travel Planner API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000" },
+    { "key": "project_id", "value": "1" },
+    { "key": "place_id", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/projects/",
+            "description": "List all projects. Supports ?search=name and ?ordering=start_date"
+          }
+        },
+        {
+          "name": "List Projects (search + order)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/projects/?search=chicago&ordering=-start_date",
+              "host": ["{{base_url}}"],
+              "path": ["api", "projects", ""],
+              "query": [
+                { "key": "search", "value": "chicago" },
+                { "key": "ordering", "value": "-start_date" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Project (minimal)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/projects/",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chicago Art Tour\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Project with Places",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/projects/",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chicago Art Tour\",\n  \"description\": \"Must-see masterpieces\",\n  \"start_date\": \"2025-06-01\",\n  \"places\": [\n    { \"artwork_id\": 27992 },\n    { \"artwork_id\": 111628 }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Single Project",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/projects/{{project_id}}/"
+          }
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/api/projects/{{project_id}}/",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Trip Name\",\n  \"description\": \"New description\",\n  \"start_date\": \"2025-07-15\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/projects/{{project_id}}/",
+            "description": "Returns 400 if any place in the project is visited"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Places",
+      "item": [
+        {
+          "name": "List Places for Project",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/projects/{{project_id}}/places/"
+          }
+        },
+        {
+          "name": "Add Place to Project",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/projects/{{project_id}}/places/",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"artwork_id\": 27992\n}"
+            },
+            "description": "artwork_id is validated against the Art Institute of Chicago API"
+          }
+        },
+        {
+          "name": "Add Place with Notes",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/projects/{{project_id}}/places/",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"artwork_id\": 111628,\n  \"notes\": \"American Gothic - iconic painting!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Single Place",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/projects/{{project_id}}/places/{{place_id}}/"
+          }
+        },
+        {
+          "name": "Update Notes",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/api/projects/{{project_id}}/places/{{place_id}}/",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Absolutely stunning - a must-see!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Mark Place as Visited",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/api/projects/{{project_id}}/places/{{place_id}}/",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"visited\": true\n}"
+            },
+            "description": "When all places in a project are visited, project.is_completed becomes true"
+          }
+        },
+        {
+          "name": "Update Notes + Mark Visited",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/api/projects/{{project_id}}/places/{{place_id}}/",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Finally visited!\",\n  \"visited\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Place",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/projects/{{project_id}}/places/{{place_id}}/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Docs",
+      "item": [
+        {
+          "name": "Swagger UI",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/docs/"
+          }
+        },
+        {
+          "name": "OpenAPI Schema",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/schema/"
+          }
+        }
+      ]
+    }
+  ]
+}
